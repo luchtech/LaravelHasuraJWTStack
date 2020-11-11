@@ -50,11 +50,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof \Symfony\Component\Routing\Exception\RouteNotFoundException) {
-            return response()->json([
-                'X-Hasura-Role' => "anonymous",
-            ]);
-        }
         return parent::render($request, $exception);
     }
 }

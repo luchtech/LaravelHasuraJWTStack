@@ -7,8 +7,8 @@ Dockerfile Name: hasura.dockerfile
 Port: 8080
 
 // Hasura Environment Variables
-HASURA_GRAPHQL_ADMIN_SECRET=secret
-HASURA_GRAPHQL_DATABASE_URL=postgresql://postgres:password@postgresql/postgres
+HASURA_GRAPHQL_ADMIN_SECRET=12345678
+HASURA_GRAPHQL_DATABASE_URL=postgresql://uticysnvdcf4fa4ufohg:iFtf3XDv3qlEmZ3q2Tmi@bruygcv3uwxe4ikegbde-postgresql.services.clever-cloud.com:5432/bruygcv3uwxe4ikegbde
 HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup,http-log,query-log,websocket-log,webhook-log
 HASURA_GRAPHQL_ENABLE_CONSOLE=true
 HASURA_GRAPHQL_JWT_SECRET={   "type":"RS256",   "key": "-----BEGIN PUBLIC KEY-----\nINSERT_HERE\n-----END PUBLIC KEY-----" }
@@ -42,8 +42,6 @@ PASSPORT_CLIENT_SECRET=insert_client_secret
 Language: Dockerfile
 Dockerfile Name: nginx.dockerfile
 Port: 80
-
-
 
 // IMPORTANT LINKS
 GraphQL Auth: https://dev.to/joselfonseca/graphql-auth-with-passport-and-lighthouse-php-14g5
