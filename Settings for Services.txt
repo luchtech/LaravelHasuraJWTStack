@@ -1,0 +1,44 @@
+PGSQL DB Hosted on Clever-Cloud
+>>> postgresql://uticysnvdcf4fa4ufohg:iFtf3XDv3qlEmZ3q2Tmi@bruygcv3uwxe4ikegbde-postgresql.services.clever-cloud.com:5432/bruygcv3uwxe4ikegbde
+
+// Hasura Build Settings
+Language: Dockerfile
+Dockerfile Name: hasura.dockerfile
+Port: 8080
+
+// Hasura Environment Variables
+HASURA_GRAPHQL_ADMIN_SECRET=secret
+HASURA_GRAPHQL_DATABASE_URL=postgresql://postgres:password@postgresql/postgres
+HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup,http-log,query-log,websocket-log,webhook-log
+HASURA_GRAPHQL_ENABLE_CONSOLE=true
+HASURA_GRAPHQL_JWT_SECRET={   "type":"RS256",   "key": "-----BEGIN PUBLIC KEY-----\nINSERT_HERE\n-----END PUBLIC KEY-----" }
+HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
+
+// Laravel Build Settings
+Language: Dockerfile
+Dockerfile Name: laravel.dockerfile
+Port: 9000
+
+// Laravel Environment Variables
+APP_DEBUG=true
+APP_KEY=insert_new_key
+APP_NAME=GatsbyLaravelHasuraDemo
+DB_CONNECTION=pgsql
+DB_DATABASE=postgres
+DB_HOST=postgresql
+DB_PASSWORD=12345678
+DB_PORT=5432
+DB_USERNAME=postgres
+LOG_CHANNEL=errorlog
+MINIO_BUCKET=demo
+MINIO_ENDPOINT=http://storage.jarcalculator.me:9000
+MINIO_KEY=minioadmin
+MINIO_REGION=us-east-1
+MINIO_SECRET=minioadmin
+PASSPORT_CLIENT_ID=2
+PASSPORT_CLIENT_SECRET=insert_client_secret
+
+// Nginx Build Settings
+Language: Dockerfile
+Dockerfile Name: nginx.dockerfile
+Port: 80
