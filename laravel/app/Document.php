@@ -5,27 +5,28 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Role extends Model
+class Document extends Model
 {
-
-    /*
+    /**
+     * The attributes that are mass assignable.
+     *
      * @var array
      */
     protected $fillable = [
-        'name', 'access_level'
+        'path', 'public_url', 'mime_type', 'is_active'
     ];
 
-    public function users_roles()
+    public function user()
     {
-        return $this->hasMany('App\UsersRoles');
+        return $this->belongsTo('App\User');
     }
 
-    // On creating, generate UUID for news roles for user
+    // On creating, generate UUID for news documents
     public static function boot()
     {
         parent::boot();
-        static::creating(function ($role) {
-            $role->{$role->getKeyName()} = 'role_' . Str::uuid();
+        static::creating(function ($document) {
+            $document->{$document->getKeyName()} = "doc_" . Str::uuid();
         });
     }
     public function getIncrementing()

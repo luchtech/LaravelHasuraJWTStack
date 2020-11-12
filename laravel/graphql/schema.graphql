@@ -7,25 +7,39 @@ scalar DateTime
 
 type Query {
     # users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
+    # user(id: ID @eq): User @find
     # me: User @guard @auth
+    roles: [Role!]! @paginate(defaultCount: 10)
+    developers: [User]
 }
 
 type User {
-    id: ID!
+    id: String!
     given_name: String!
     middle_name: String!
     surname: String!
     email: String!
     created_at: DateTime!
     updated_at: DateTime!
-    role: Role! @belongsTo
+}
+
+type UsersRoles {
+    id: String!
+    user_id: User! @belongsTo
+    role_id: Role! @belongsTo
+    is_active: Boolean!
+    is_approved: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
 }
 
 type Role {
-    id: ID!
+    id: String!
     name: String!
     description: String
+    access_level: Int!
+    created_at: DateTime!
+    updated_at: DateTime!
 }
 
 type Mutation {
@@ -54,9 +68,11 @@ type Mutation {
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve"
         )
     register(input: RegisterInput @spread): RegisterResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve"
-        )
+        @field(resolver: "App\\GraphQL\\Mutations\\Register@resolve")
+    # register(input: RegisterInput @spread): RegisterResponse!
+    #     @field(
+    #         resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve"
+    #     )
     socialLogin(input: SocialLoginInput! @spread): AuthPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"

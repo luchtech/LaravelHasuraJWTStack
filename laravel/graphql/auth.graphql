@@ -12,7 +12,6 @@ type AuthPayload {
     refresh_token: String
     expires_in: Int
     token_type: String
-    user: User
 }
 
 type RefreshTokenPayload {
@@ -65,7 +64,7 @@ input RegisterInput {
     email: String! @rules(apply: ["required", "email", "unique:users,email"])
     password: String! @rules(apply: ["required", "confirmed", "min:8"])
     password_confirmation: String!
-    role_id: Int!
+    role_id: String!
 }
 
 input SocialLoginInput {

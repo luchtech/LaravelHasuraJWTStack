@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e1137bbc053e32cc68af6a9f4469e5b",
+    "content-hash": "162b8af63a4f27848796bd3fe33e4650",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -188,6 +188,63 @@
                 "math"
             ],
             "time": "2020-08-18T23:57:15+00:00"
+        },
+        {
+            "name": "corbosman/laravel-passport-claims",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/corbosman/laravel-passport-claims.git",
+                "reference": "4bcadd3cd0c1e57ba88759504c7b9741a25956e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/corbosman/laravel-passport-claims/zipball/4bcadd3cd0c1e57ba88759504c7b9741a25956e3",
+                "reference": "4bcadd3cd0c1e57ba88759504c7b9741a25956e3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5|~6|~7|~8",
+                "laravel/passport": "^8|^9|^10"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "^4.4|^5.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CorBosman\\Passport\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CorBosman\\Passport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cor Bosman",
+                    "email": "cor@in.ter.net"
+                }
+            ],
+            "description": "Add claims to Laravel Passport JWT Tokens",
+            "homepage": "https://github.com/corbosman/laravel-passport-claims",
+            "keywords": [
+                "claim",
+                "jwt",
+                "laravel",
+                "laravel-passport-claims",
+                "passport"
+            ],
+            "time": "2020-09-12T13:25:48+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -1572,36 +1629,35 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v4.4.1",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "80951df0d93435b773aa00efe1fad6d5015fac75"
+                "reference": "dc65eb73c48b866854822b603e8ebe80a58ba033"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/80951df0d93435b773aa00efe1fad6d5015fac75",
-                "reference": "80951df0d93435b773aa00efe1fad6d5015fac75",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/dc65eb73c48b866854822b603e8ebe80a58ba033",
+                "reference": "dc65eb73c48b866854822b603e8ebe80a58ba033",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "guzzlehttp/guzzle": "~6.0",
                 "illuminate/http": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "illuminate/support": "~5.7.0|~5.8.0|^6.0|^7.0",
-                "league/oauth1-client": "^1.0",
+                "league/oauth1-client": "~1.0",
                 "php": "^7.1.3"
             },
             "require-dev": {
                 "illuminate/contracts": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^3.7|^3.8|^4.0|^5.0",
                 "phpunit/phpunit": "^7.0|^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.x-dev"
+                    "dev-master": "4.0-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -1633,7 +1689,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2020-06-03T13:30:03+00:00"
+            "time": "2019-11-19T16:39:40+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -6118,6 +6174,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
