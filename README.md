@@ -1,4 +1,4 @@
-# Laravel-Hasura Stack (November 2020)
+# Laravel + Hasura JWT Stack (November 2020)
 
 This is created for people who want to try **GraphQL** with [**Laravel**](https://laravel.com) and want to experience [**Hasura GraphQL Builder**](https://hasura.io).
 
