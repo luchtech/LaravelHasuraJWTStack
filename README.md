@@ -1,46 +1,124 @@
-# Laravel-Hasura Stack with MinIO Integration for Photo and Document Uploads
+# Laravel-Hasura Stack (November 2020)
 
-This is created for people who want to try `GraphQL` with [**Laravel**](https://laravel.com) and want to experience [**Hasura GraphQL Builder**](https://hasura.io).
+This is created for people who want to try **GraphQL** with [**Laravel**](https://laravel.com) and want to experience [**Hasura GraphQL Builder**](https://hasura.io).
 
-In this boilerplate, Laravel has two kinds of API: (1) [`RESTful`](https://restfulapi.net) and (2) [`GraphQL`](https://graphql.org). GraphQL API is made possible by the [**Lighthouse**](https://lighthouse-php.com).
+In this boilerplate, Laravel has two kinds of API: (1) [`RESTful`](https://restfulapi.net) and (2) [`GraphQL`](https://graphql.org). GraphQL API is made possible by the [**Laravel Lighthouse**](https://lighthouse-php.com).
 
-![Laravel Hasura Stack](../GatsbyLaravelHasuraStack/images/LaravelHasura.png)
+## Laravel Features
 
-Hasura requires 3rd party authentication which can be complemented by Laravel's `built-in authentication system`. Hasura supports two modes of authentication: (1) via [**webook**](https://hasura.io/docs/1.0/graphql/core/auth/authentication/index.html#webhook) and (2) via [**JWT**](https://hasura.io/docs/1.0/graphql/core/auth/authentication/index.html#jwt-json-web-token). In this boilerplate, I chose **JWT** mode to reduce roundtrips and to make [`subscriptions`](https://www.apollographql.com/docs/react/data/subscriptions/) possible.
+- [x] GraphQL-ready
+- [x] GraphQL JWT Authentication System (Login, Register, Social Login, etc.)
+- [x] Added JWT Claims for Hasura GraphQL Server
+- [x] Multi-Roles for Users with Approval and Access Level Logic
+- [x] Anonymous Role for Newly Registered Users with Role Under Approval
+- [x] MinIO File Storage Integration
+- [x] RESTful API route for Photo Upload
+- [ ] RESTful API route for Multiple Photo Upload
+- [x] RESTful API route for Document Upload
+- [ ] RESTful API route for Multiple Document Upload
+- [ ] Stripe Integration
 
-![Hasura's JWT Mode Diagram](../GatsbyLaravelHasuraStack/images/HasuraJWTMode.jpg)
+## Boilerplate Structure
 
-Thanks to [`Jose Luis Fonseca`](https://twitter.com/Joselfonseca)'s package ([*joselfonseca/lighthouse-graphql-passport-auth*](https://lighthouse-php-auth.com)), I was able to create Login, Register, and other authentication-related mutations instantly. You can follow his step-by-step tutorial from [here](https://dev.to/joselfonseca/graphql-auth-with-passport-and-lighthouse-php-14g5).
+![Laravel Hasura Stack](./images/LaravelHasura.png)
 
-Also, thanks to [`Cor Bosman`](https://github.com/corbosman)'s package ([*corbosman/laravel-passport-claims*](https://github.com/corbosman/laravel-passport-claims)), I was able to add [custom claims](https://hasura.io/docs/1.0/graphql/core/auth/authentication/jwt.html#the-spec) to Laravel's JWT which are *required* by Hasura.
+Hasura _requires_ 3rd party authentication which can be complemented by Laravel's `built-in authentication system`. Hasura supports two modes of authentication: (1) via [`webook`](https://hasura.io/docs/1.0/graphql/core/auth/authentication/index.html#webhook) and (2) via [`JWT`](https://hasura.io/docs/1.0/graphql/core/auth/authentication/index.html#jwt-json-web-token). In this boilerplate, I chose **JWT mode** to reduce roundtrips and to make [`subscriptions`](https://www.apollographql.com/docs/react/data/subscriptions/) possible.
+
+![Hasura's JWT Mode Diagram](./images/HasuraJWTMode.jpg)
+
+Thanks to [**Jose Luis Fonseca**](https://twitter.com/Joselfonseca)'s package ([_joselfonseca/lighthouse-graphql-passport-auth_](https://lighthouse-php-auth.com)), I was able to create Login, Register, and other authentication-related mutations instantly. You can follow his step-by-step tutorial from [here](https://dev.to/joselfonseca/graphql-auth-with-passport-and-lighthouse-php-14g5).
+
+Also, thanks to [**Cor Bosman**](https://github.com/corbosman)'s package ([_corbosman/laravel-passport-claims_](https://github.com/corbosman/laravel-passport-claims)), I was able to add [`custom claims`](https://hasura.io/docs/1.0/graphql/core/auth/authentication/jwt.html#the-spec) to Laravel's JWT which are _required_ by Hasura.
 
 ## Directory Structure
 
-* `/laravel` - Laravel application
-* `/nginx` - Configuration files for nginx to serve PHP
-* `laravel.dockerfile` - Dockerfile to boostrap Laravel app
-* `nginx.dockerfile` - Dockerfile to serve nginx website
-* `hasura.dockerfile` - Dockerfile for Hasura GraphQL engine
-* `docker-compose.yaml` - Composition of nginx + laravel + postgres to work together
+- `/laravel` - Laravel application
+- `/nginx` - Configuration files for nginx to serve PHP
+- `laravel.dockerfile` - Dockerfile to boostrap Laravel app
+- `nginx.dockerfile` - Dockerfile to serve nginx website
+- `hasura.dockerfile` - Dockerfile for Hasura GraphQL engine
+- `docker-compose.yaml` - Composition of nginx + laravel + postgres to work together
 
 ## Running locally
 
 **Requires Docker v2.x or higher**
 
-In the root of this repository use `docker-compose up -d`. Once complete, go to `localhost:8080` to access the website!
+In the root of this repository run:
 
-As for Hasura, make sure to use the existing PostreSQL database. Follow this [instruction](https://hasura.io/docs/1.0/graphql/core/deployment/deployment-guides/docker.html#deployment-docker).
+```
+docker-compose up -d
+```
 
-## Before Deploying to [KintoHub](https://www.kintohub.com)
-**IMPORTANT**: Make sure to follow Fonseca's [tutorial](https://dev.to/joselfonseca/graphql-auth-with-passport-and-lighthouse-php-14g5) to generate `new app key`, run `fresh migrations` and to `update OAuth keys`. The security of your Laravel application depends on these keys so make sure to replace my keys. I usually update those stuff after I deployed everything to KintoHub so that I can connect to the database via [Kinto CLI](https://github.com/kintohub/kinto-cli). I then generate new app key (`php artisan key:generate`), run the migrations (`php artisan migrate:fresh --seed`), update OAuth keys (`php artisan passport:install`), then redeploy.
+It will initialize **PostgreSQL** and **Hasura**. As for Laravel, run it normally and make sure to use the existing PostreSQL database with Hasura. Also, if you have MinIO, replace all MinIO related environment variables on Laravel's env file.
+
+If your Postgres and Hasura Server are up and running, follow these instructions:
+
+**Step 1**: Make sure to `generate your own app key` before anything else. App Key will be used for all sorts of encryption within Laravel.
+
+```
+php artisan key:generate
+```
+
+![Generate New App Key](./images/01_AppKey.png)
+**Step 2**: Run fresh migrations to create all necessary tables and seed the roles table as well.
+
+```
+php artisan migrate:fresh --seed
+```
+
+![Run Fresh Migrations](./images/02_Migrate.png)
+**Step 3**: You have to generate your own OAuth Keys as well. To remove mine, just use `--force`. Make sure to paste the new grant client id and secret to Laravel's env file.
+
+```
+php artisan passport:install --force
+```
+
+![Generate New OAuth Keys](./images/03_OAuthKeys.png)
+**Step 4**: Make sure to refresh config cache to utilize the new keys.
+
+```
+php artisan config:cache
+```
+
+![Clear Configs](./images/04_ClearConfigs.png)
+**Step 5**: Run the app to test our GraphQL API.
+
+```
+php artisan serve
+```
+
+![Serve the application](./images/05_Serve.png)
+**Step 6**: If we will try to register, the role id is required. We can look for the role id's via Laravel Tinker or by querying the roles on Laravel's GraphQL Playground.
+
+### Via Laravel Tinker
+
+![Roles on Tinker](./images/06_Tinker.png)
+
+### Via GraphQL Playground Roles Query
+
+```
+http://localhost:8000/graphql-playground
+```
+
+![Roles on Playground](./images/07_PlaygroundQuery.png)
+**Step 7**: Since we now have the role of the user (which will be approved immediately), we can proceed to register. To register, we have to use the `register` mutation. Since this is GraphQL, we can specify what we need easily which is the JWT access token in this case.
+![Register Mutation](./images/08_PlaygroundRegister.png)
+**Step 8**: Since we already registered the user above, we can now use it to login as well. To login, we have to use the `login` mutation. It will also return the JWT access token since we only asked for that.
+![Login Mutation](./images/07_PlaygroundLogin.png)
+**Step 9**: These JWT access tokens can be decoded to get important information like expiration for cookie creation, user information for front-end users, and custom claims for Hasura server. You can try at [jwt.io](https://jwt.io) and paste the JWT access token.
+![JWT.io](./images/09_JWTDecode.png)
+
+## Before Deploying to [KintoHub](https://www.kintohub.com) (optional)
+
+Since **KintoHub**'s databases can only be accessed within their environment (which makes it really secure), I usually just deploy this setup as it is. I then connect to my Postgres database via [Kinto CLI](https://github.com/kintohub/kinto-cli), and then redeploy my Laravel application and Hasura server with updated settings.
 
 **Note**: You can always deploy this setup on other platforms like [Heroku](https://www.heroku.com), [DigitalOcean](https://www.digitalocean.com), etc. I just use KintoHub since this is where I first deployed it and since it uses Docker by default.
 
-## Deploying on KintoHub
+## Deploying on KintoHub (optional)
 
 If you do not have an account, [signup](https://www.kintohub.com) first.
 
-### Deploy a PostgreSQL Server
+### Deploy a PostgreSQL Server (optional)
 
 1. Click **Create Service** at the top right of your environment
 2. Click **From Catalog** and then select **PostgreSQL**
@@ -49,9 +127,9 @@ If you do not have an account, [signup](https://www.kintohub.com) first.
 
 Once complete, go to the **Access** tab and copy the **Root User Connection String**. This will take several minutes to complete.
 
-**Note**: You can deploy your PostgreSQL database elsewhere but make sure to install `pgcrypto` extension
+**Note**: You can deploy your PostgreSQL database elsewhere but make sure to install `pgcrypto` extension.
 
-### Deploy Laravel PHP App
+### Deploy Laravel PHP App (optional)
 
 1. Click **Create Service** at the top right of your environment
 2. Choose **Backend API** from the list
@@ -79,7 +157,7 @@ PASSPORT_CLIENT_ID=insert_grant_client_id
 PASSPORT_CLIENT_SECRET=insert_grant_client_secret
 ```
 
-### Deploy Nginx Php Proxy
+### Deploy Nginx Php Proxy (optional)
 
 We need to deploy web host proxy to serve the php app on KintoHub.
 
@@ -92,7 +170,7 @@ We need to deploy web host proxy to serve the php app on KintoHub.
 
 When complete, open the **Access** tab and open the external URL to see your Laravel app!
 
-### Deploy Hasura GraphQL Engine
+### Deploy Hasura GraphQL Engine (optional)
 
 1. Click **Create Service** at the top right of your environment
 2. Choose **Backend API** from the list

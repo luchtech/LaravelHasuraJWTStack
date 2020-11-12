@@ -4,17 +4,17 @@ version: "3"
 networks:
   laravel:
 services:
-  site:
-    build:
-      context: .
-      dockerfile: nginx.dockerfile
-    ports:
-      - "8000:80"
-    depends_on:
-      - laravel
-      - postgres
-    networks:
-      - laravel
+  # site:
+  #   build:
+  #     context: .
+  #     dockerfile: nginx.dockerfile
+  #   ports:
+  #     - "8000:80"
+  #   depends_on:
+  #     - laravel
+  #     - postgres
+  #   networks:
+  #     - laravel
   postgres:
     image: postgres:12
     restart: unless-stopped
@@ -26,33 +26,33 @@ services:
       POSTGRES_PASSWORD: 12345678
     networks:
       - laravel
-  laravel:
-    build:
-      context: .
-      dockerfile: laravel.dockerfile
-    environment:
-      DATABASE_URL: postgres://postgres:12345678@postgres:5432/postgres
-    ports:
-      - "9000:9000"
-    networks:
-      - laravel
-  # graphql-engine:
+  # laravel:
   #   build:
   #     context: .
-  #     dockerfile: hasura.dockerfile
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - "postgres"
-  #   restart: unless-stopped
+  #     dockerfile: laravel.dockerfile
   #   environment:
-  #     HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:12345678@postgres:5432/postgres
-  #     ## enable the console served by server
-  #     HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-  #     ## enable debugging mode. It is recommended to disable this in production
-  #     HASURA_GRAPHQL_DEV_MODE: "true"
-  #     HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-  #     ## uncomment next line to set an admin secret
-  #     HASURA_GRAPHQL_ADMIN_SECRET: 987654321
+  #     DATABASE_URL: postgres://postgres:12345678@postgres:5432/postgres
+  #   ports:
+  #     - "9000:9000"
+  #   networks:
+  #     - laravel
+  graphql-engine:
+    build:
+      context: .
+      dockerfile: hasura.dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "postgres"
+    restart: unless-stopped
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:12345678@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## uncomment next line to set an admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: 987654321
 volumes:
   db_data:
