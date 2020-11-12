@@ -96,7 +96,7 @@ class User extends Authenticatable
     {
         parent::boot();
         static::creating(function ($user) {
-            $user->{$user->getKeyName()} = (string) Str::uuid();
+            $user->{$user->getKeyName()} = "user_" . Str::uuid();
         });
     }
     public function getIncrementing()

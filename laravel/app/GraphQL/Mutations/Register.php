@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class Register extends BaseAuthResolver
 {
@@ -24,10 +25,9 @@ class Register extends BaseAuthResolver
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+
         $model = $this->createAuthModel($args);
-
         $this->validateAuthModel($model);
-
         if ($model instanceof MustVerifyEmail) {
             $model->sendEmailVerificationNotification();
 
@@ -38,6 +38,7 @@ class Register extends BaseAuthResolver
                 'status' => 'MUST_VERIFY_EMAIL',
             ];
         }
+
         $credentials = $this->buildCredentials([
             'username' => $args[config('lighthouse-graphql-passport.username')],
             'password' => $args['password'],
@@ -74,9 +75,10 @@ class Register extends BaseAuthResolver
         if (is_null($role)) throw new \RuntimeException("Cannot find role associated with role_id.");
         //proceed with creating a user if no error
         $user = $this->getAuthModelFactory()->create($input);
+
         //add role to user
         $user_role->role_id = $role->id;
-        $user_role->is_approved = $role->id == 1 ? true : false;
+        $user_role->is_approved = $role->access_level == 1 ? true : false;
         $user->users_roles()->save($user_role);
         return $user;
     }

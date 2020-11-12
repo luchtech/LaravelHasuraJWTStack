@@ -31,7 +31,7 @@ class UsersRoles extends Model
     {
         parent::boot();
         static::creating(function ($user_role) {
-            $user_role->{$user_role->getKeyName()} = 'role_' . Str::uuid();
+            $user_role->{$user_role->getKeyName()} = 'urole_' . Str::uuid();
         });
     }
     public function getIncrementing()

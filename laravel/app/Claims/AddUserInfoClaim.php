@@ -13,21 +13,13 @@ class AddUserInfoClaim
             })
             ->sortBy('access_level')
             ->pluck('name');
+        if ($roles->isEmpty()) $roles = $roles->concat(["anonymous"]);
         $default_role = $roles->first();
-        $token->addClaim('user', [
-            "id" => $user->id,
-            "email" => $user->email,
-            "given_name" => $user->given_name,
-            "middle_name" => $user->middle_name,
-            "surname" => $user->surname,
-            "avatar" => $user->avatar,
-            "phone_number" => $user->phone_number,
-            "roles" => $roles
-        ]);
+        $token->addClaim('user', collect($user)->except(['role_id', 'provider', 'provider_id'])->put("roles", $roles));
         $token->addClaim("https://hasura.io/jwt/claims", [
             "x-hasura-allowed-roles" => $roles,
             "x-hasura-default-role" => $default_role,
-            "x-hasura-user-id" => strval($user->id),
+            "x-hasura-user-id" => $user->id,
         ]);
         return $next($token);
     }

@@ -14,9 +14,9 @@ class CreateUsersRolesTable extends Migration
     public function up()
     {
         Schema::create('users_roles', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->string('id')->primary();
             $table->string("user_id")->references('id')->on('users');
-            $table->integer("role_id")->default(2)->references('id')->on('roles');
+            $table->string("role_id")->references('id')->on('roles');
             $table->boolean("is_active")->nullable()->default(true);
             $table->boolean("is_approved")->nullable()->default(false);
             $table->timestamps();
