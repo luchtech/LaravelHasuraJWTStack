@@ -2,18 +2,15 @@
 
 namespace App\Claims;
 
+use App\User;
+use App\Http\Controllers\API\MeController;
+
 class AddUserInfoClaim
 {
     public function handle($token, $next)
     {
-        $user = \App\User::find($token->getUserIdentifier());
-        $roles = $user->users_roles()->where(["is_approved" => true, "is_active" => true])->get()
-            ->map(function ($user_role) {
-                return $user_role->role;
-            })
-            ->sortBy('access_level')
-            ->pluck('name');
-        if ($roles->isEmpty()) $roles = $roles->concat(["anonymous"]);
+        $user = User::find($token->getUserIdentifier());
+        $roles = MeController::getRoles($user);
         $default_role = $roles->first();
         $token->addClaim('user', collect($user)->except(['role_id', 'provider', 'provider_id'])->put("roles", $roles));
         $token->addClaim("https://hasura.io/jwt/claims", [
