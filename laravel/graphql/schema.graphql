@@ -9,7 +9,7 @@ type Query {
     # users: [User!]! @paginate(defaultCount: 10)
     # user(id: ID @eq): User @find
     # me: User @guard @auth
-    roles: [Role!]! @paginate(defaultCount: 10)
+    # roles: [Role!]! @paginate(defaultCount: 10)
     developers: [User]
 }
 
