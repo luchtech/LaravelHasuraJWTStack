@@ -55,6 +55,8 @@ docker-compose up -d
 
 It will initialize **PostgreSQL**, **MinIO** and **Hasura**. As for Laravel, run it normally and make sure to use the existing PostreSQL database with Hasura. Also, if you have MinIO, replace all MinIO related environment variables on Laravel's env file.
 
+![Boilerplate](./images/Docker_Apps.png)
+
 If your Postgres, MinIO, and Hasura Server are up and running, follow these instructions for Laravel:
 
 **Step 1**: Since Laravel requires `.env` file, rename the `.env.example` to `.env`. Make sure to install all dependencies by running this command:
