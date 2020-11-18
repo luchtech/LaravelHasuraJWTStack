@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
+    protected $keyword = "photo";
+    protected $valid = "image|max:5120";
+
     /**
      * Instantiate a new controller instance.
      *
@@ -38,29 +41,50 @@ class PhotoController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-        // $photos = $request->validate([
-        //     "photos" => "required",
-        //     "photos.*" => "image"
-        // ]);
-        $validator = validator(
+        $validatorMultiple = validator(
             $request->all(),
             [
-                "photo" => "required|image|max:5120",
+                "{$this->keyword}s" => 'required',
+                "{$this->keyword}s.*" => $this->valid
             ]
         );
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+        $validatorSingle = validator(
+            $request->all(),
+            [$this->keyword => "required|$this->valid"]
+        );
+        if ($validatorSingle->fails() && $validatorMultiple->fails()) {
+            return response()->json([
+                'errors' => array_merge($validatorSingle->errors()->all(), $validatorMultiple->errors()->all())
+            ], 401);
+        } else if ($validatorMultiple->fails()) {
+            // single upload
+            //save it to MinIO if no error
+            $file = $request->photo->storePublicly("{$this->keyword}s");
+            //add entry to the documents table on database
+            $photo = $user->photos()->create([
+                "path" => $file,
+                "public_url" => Storage::url($file),
+                "created_at" => Storage::lastModified($file),
+                "updated_at" => Storage::lastModified($file),
+            ]);
+            return $photo;
+        } else {
+            // multiple upload
+            $files = array();
+            if ($photos = $request->file("{$this->keyword}s")) {
+                foreach ($photos as $photo) {
+                    //save it to MinIO if no error
+                    $file = $photo->storePublicly("{$this->keyword}s");
+                    $files[] = $user->photos()->create([
+                        "path" => $file,
+                        "public_url" => Storage::url($file),
+                        "created_at" => Storage::lastModified($file),
+                        "updated_at" => Storage::lastModified($file),
+                    ]);
+                }
+            }
+            return $files;
         }
-        //save it to MinIO if no error
-        $file = $request->photo->storePublicly("photos");
-        //add entry to the photos table on database
-        $photo = $user->photos()->create([
-            "path" => $file,
-            "public_url" => Storage::url($file),
-            "created_at" => Storage::lastModified($file),
-            "updated_at" => Storage::lastModified($file),
-        ]);
-        return $photo;
     }
 
     /**
@@ -101,6 +125,9 @@ class PhotoController extends Controller
 
         // check if photo still exists
         if (!Storage::exists($photo->path)) {
+            // deactivate photo
+            $photo->is_active = false;
+            $photo->save();
             abort(404, "Photo not found.");
         }
 

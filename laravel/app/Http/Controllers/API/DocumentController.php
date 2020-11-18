@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 class DocumentController extends Controller
 {
 
+    protected $keyword = "document";
+    protected $valid = "mimes:doc,docx,pdf,txt|max:5120";
     /**
      * Instantiate a new controller instance.
      *
@@ -39,26 +41,52 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-        $validator = validator(
+        $validatorMultiple = validator(
             $request->all(),
             [
-                'file' => 'required|mimes:doc,docx,pdf,txt|max:5120'
+                "{$this->keyword}s" => 'required',
+                "{$this->keyword}s.*" => $this->valid
             ]
         );
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+        $validatorSingle = validator(
+            $request->all(),
+            [$this->keyword => "required|$this->valid"]
+        );
+        if ($validatorSingle->fails() && $validatorMultiple->fails()) {
+            return response()->json([
+                'errors' => array_merge($validatorSingle->errors()->all(), $validatorMultiple->errors()->all())
+            ], 401);
+        } else if ($validatorMultiple->fails()) {
+            // single upload
+            //save it to MinIO if no error
+            $file = $request->file($this->keyword)->storePublicly("{$this->keyword}s");
+            //add entry to the documents table on database
+            $photo = $user->documents()->create([
+                "path" => $file,
+                "public_url" => Storage::url($file),
+                "mime_type" => Storage::mimeType($file),
+                "created_at" => Storage::lastModified($file),
+                "updated_at" => Storage::lastModified($file),
+            ]);
+            return $photo;
+        } else {
+            // multiple upload
+            $files = array();
+            if ($photos = $request->file("{$this->keyword}s")) {
+                foreach ($photos as $photo) {
+                    //save it to MinIO if no error
+                    $file = $photo->storePublicly("{$this->keyword}s");
+                    $files[] = $user->documents()->create([
+                        "path" => $file,
+                        "public_url" => Storage::url($file),
+                        "mime_type" => Storage::mimeType($file),
+                        "created_at" => Storage::lastModified($file),
+                        "updated_at" => Storage::lastModified($file),
+                    ]);
+                }
+            }
+            return $files;
         }
-        //save it to MinIO if no error
-        $file = $request->file->storePublicly("files");
-        //add entry to the documents table on database
-        $document = $user->documents()->create([
-            "path" => $file,
-            "public_url" => Storage::url($file),
-            "mime_type" => Storage::mimeType($file),
-            "created_at" => Storage::lastModified($file),
-            "updated_at" => Storage::lastModified($file),
-        ]);
-        return $document;
     }
 
     /**
@@ -97,8 +125,11 @@ class DocumentController extends Controller
             abort(403, "Unauthorized.");
         }
 
-        // check if photo still exists
+        // check if document still exists
         if (!Storage::exists($document->path)) {
+            // deactivate document
+            $document->is_active = false;
+            $document->save();
             abort(404, "Document not found.");
         }
 
@@ -108,7 +139,7 @@ class DocumentController extends Controller
         $document->public_url = "";
         $document->mime_type = "";
 
-        // deactivate photo
+        // deactivate document
         $document->is_active = false;
         $document->save();
 
