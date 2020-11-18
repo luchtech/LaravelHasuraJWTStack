@@ -17,7 +17,10 @@ In this boilerplate, Laravel has two kinds of API: (1) [`RESTful`](https://restf
 - [x] RESTful API route for Document Upload
 - [x] RESTful API route for Multiple Document Upload
 - [ ] Stripe Integration
-- [ ] Frontend (Planning to add Gatsby React)
+
+## To Be Added
+
+- [ ] Frontend (Gatsby React with Authentication Scaffolding)
 
 ## Boilerplate Structure
 
@@ -50,46 +53,52 @@ In the root of this repository run:
 docker-compose up -d
 ```
 
-It will initialize **PostgreSQL** and **Hasura**. As for Laravel, run it normally and make sure to use the existing PostreSQL database with Hasura. Also, if you have MinIO, replace all MinIO related environment variables on Laravel's env file.
+It will initialize **PostgreSQL**, **MinIO** and **Hasura**. As for Laravel, run it normally and make sure to use the existing PostreSQL database with Hasura. Also, if you have MinIO, replace all MinIO related environment variables on Laravel's env file.
 
-If your Postgres and Hasura Server are up and running, follow these instructions:
+If your Postgres, MinIO, and Hasura Server are up and running, follow these instructions for Laravel:
 
-**Step 1**: Make sure to `generate your own app key` before anything else. App Key will be used for all sorts of encryption within Laravel.
+**Step 1**: Since Laravel requires `.env` file, rename the `.env.example` to `.env`. Make sure to install all dependencies by running this command:
+
+```
+composer install
+```
+
+**Step 2**: Make sure to `generate your own app key` before anything else. App Key will be used for all sorts of encryption within Laravel.
 
 ```
 php artisan key:generate
 ```
 
 ![Generate New App Key](./images/01_AppKey.png)
-**Step 2**: Run fresh migrations to create all necessary tables and seed the roles table as well.
+**Step 3**: Run fresh migrations to create all necessary tables and seed the roles table as well.
 
 ```
 php artisan migrate:fresh --seed
 ```
 
 ![Run Fresh Migrations](./images/02_Migrate.png)
-**Step 3**: You have to generate your own OAuth Keys as well. To remove mine, just use `--force`. Make sure to paste the new grant client id and secret to Laravel's env file.
+**Step 4**: You have to generate your own OAuth Keys as well. To remove mine, just use `--force`. Make sure to paste the new grant client id and secret to Laravel's env file.
 
 ```
 php artisan passport:install --force
 ```
 
 ![Generate New OAuth Keys](./images/03_OAuthKeys.png)
-**Step 4**: Make sure to refresh config cache to utilize the new keys.
+**Step 5**: Make sure to refresh config cache to utilize the new keys.
 
 ```
 php artisan config:cache
 ```
 
 ![Clear Configs](./images/04_ClearConfigs.png)
-**Step 5**: Run the app to test our GraphQL API.
+**Step 6**: Run the app to test our GraphQL API.
 
 ```
 php artisan serve
 ```
 
 ![Serve the application](./images/05_Serve.png)
-**Step 6**: If we will try to register, the role id is required. We can look for the role id's via Laravel Tinker or by querying the roles on Laravel's GraphQL Playground.
+**Step 7**: If we will try to register, the role id is required. We can look for the role id's via Laravel Tinker or by querying the roles on Laravel's GraphQL Playground.
 
 ### Via Laravel Tinker
 
