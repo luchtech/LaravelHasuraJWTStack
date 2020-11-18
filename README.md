@@ -26,6 +26,17 @@ In this boilerplate, Laravel has two kinds of API: (1) [`RESTful`](https://restf
 
 ![Laravel Hasura Stack](./images/LaravelHasura.png)
 
+## Technologies Used
+
+- **GraphQL**
+- **Hasura**
+- **Postgres**
+- **Laravel**
+- **JWT**
+- **MinIO**
+
+---
+
 Hasura _requires_ 3rd party authentication which can be complemented by Laravel's `built-in authentication system`. Hasura supports two modes of authentication: (1) via [`webook`](https://hasura.io/docs/1.0/graphql/core/auth/authentication/index.html#webhook) and (2) via [`JWT`](https://hasura.io/docs/1.0/graphql/core/auth/authentication/index.html#jwt-json-web-token). In this boilerplate, I chose **JWT mode** to reduce roundtrips and to make [`subscriptions`](https://www.apollographql.com/docs/react/data/subscriptions/) possible.
 
 ![Hasura's JWT Mode Diagram](./images/HasuraJWTMode.jpg)
@@ -33,6 +44,8 @@ Hasura _requires_ 3rd party authentication which can be complemented by Laravel'
 Thanks to [**Jose Luis Fonseca**](https://twitter.com/Joselfonseca)'s package ([_joselfonseca/lighthouse-graphql-passport-auth_](https://lighthouse-php-auth.com)), I was able to create Login, Register, and other authentication-related mutations instantly. You can follow his step-by-step tutorial from [here](https://dev.to/joselfonseca/graphql-auth-with-passport-and-lighthouse-php-14g5).
 
 Also, thanks to [**Cor Bosman**](https://github.com/corbosman)'s package ([_corbosman/laravel-passport-claims_](https://github.com/corbosman/laravel-passport-claims)), I was able to add [`custom claims`](https://hasura.io/docs/1.0/graphql/core/auth/authentication/jwt.html#the-spec) to Laravel's JWT which are _required_ by Hasura.
+
+---
 
 ## Directory Structure
 
@@ -42,6 +55,8 @@ Also, thanks to [**Cor Bosman**](https://github.com/corbosman)'s package ([_corb
 - `nginx.dockerfile` - Dockerfile to serve nginx website
 - `hasura.dockerfile` - Dockerfile for Hasura GraphQL engine
 - `docker-compose.yaml` - Composition of nginx + laravel + postgres to work together
+
+---
 
 ## Running locally
 
@@ -100,25 +115,21 @@ php artisan serve
 ```
 
 ![Serve the application](./images/05_Serve.png)
-**Step 7**: If we will try to register, the role id is required. We can look for the role id's via Laravel Tinker or by querying the roles on Laravel's GraphQL Playground.
+**Step 7**: If we will try to register, the role id is required. We can look for the role id's via Laravel Tinker.
 
 ### Via Laravel Tinker
 
 ![Roles on Tinker](./images/06_Tinker.png)
 
-### Via GraphQL Playground Roles Query
-
-```
-http://localhost:8000/graphql-playground
-```
-
-![Roles on Playground](./images/07_PlaygroundQuery.png)
 **Step 7**: Since we now have the role of the user (which will be approved immediately), we can proceed to register. To register, we have to use the `register` mutation. Since this is GraphQL, we can specify what we need easily which is the JWT access token in this case.
 ![Register Mutation](./images/08_PlaygroundRegister.png)
 **Step 8**: Since we already registered the user above, we can now use it to login as well. To login, we have to use the `login` mutation. It will also return the JWT access token since we only asked for that.
 ![Login Mutation](./images/07_PlaygroundLogin.png)
 **Step 9**: These JWT access tokens can be decoded to get important information like expiration for cookie creation, user information for front-end users, and custom claims for Hasura server. You can try at [jwt.io](https://jwt.io) and paste the JWT access token.
+
 ![JWT.io](./images/09_JWTDecode.png)
+
+---
 
 ## Before Deploying to [KintoHub](https://www.kintohub.com) (optional)
 
@@ -195,7 +206,7 @@ HASURA_GRAPHQL_ADMIN_SECRET=12345678
 HASURA_GRAPHQL_DATABASE_URL=postgresql://username:password@host:5432/database
 HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup,http-log,query-log,websocket-log,webhook-log
 HASURA_GRAPHQL_ENABLE_CONSOLE=true
-HASURA_GRAPHQL_JWT_SECRET={   "type":"RS256",   "key": "-----BEGIN PUBLIC KEY-----\nINSERT_PUBLIC_KEY_HERE\n-----END PUBLIC KEY-----" }
+HASURA_GRAPHQL_JWT_SECRET={   "type":"RS256",   "key": "" }
 HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
 ```
 

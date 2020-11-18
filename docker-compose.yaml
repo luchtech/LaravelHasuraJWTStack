@@ -31,7 +31,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: secret
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup,http-log,query-log,websocket-log,webhook-log
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      # HASURA_GRAPHQL_JWT_SECRET={   "type":"RS256",   "key": "-----BEGIN PUBLIC KEY-----\nINSERT_PUBLIC_KEY_HERE\n-----END PUBLIC KEY-----" }
+      # HASURA_GRAPHQL_JWT_SECRET:'{   "type":"RS256",   "key": "" }'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
     networks:
       - larasura
