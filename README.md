@@ -13,9 +13,9 @@ In this boilerplate, Laravel has two kinds of API: (1) [`RESTful`](https://restf
 - [x] Anonymous Role for Newly Registered Users with Role Under Approval
 - [x] MinIO File Storage Integration
 - [x] RESTful API route for Photo Upload
-- [ ] RESTful API route for Multiple Photo Upload
+- [x] RESTful API route for Multiple Photo Upload
 - [x] RESTful API route for Document Upload
-- [ ] RESTful API route for Multiple Document Upload
+- [x] RESTful API route for Multiple Document Upload
 - [ ] Stripe Integration
 
 ## Boilerplate Structure
