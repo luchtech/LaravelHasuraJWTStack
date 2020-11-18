@@ -17,6 +17,7 @@ In this boilerplate, Laravel has two kinds of API: (1) [`RESTful`](https://restf
 - [x] RESTful API route for Document Upload
 - [x] RESTful API route for Multiple Document Upload
 - [ ] Stripe Integration
+- [ ] Frontend (Planning to add Gatsby React)
 
 ## Boilerplate Structure
 
