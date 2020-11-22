@@ -31,7 +31,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: secret
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup,http-log,query-log,websocket-log,webhook-log
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      # HASURA_GRAPHQL_JWT_SECRET:'{   "type":"RS256",   "key": "" }'
+      HASURA_GRAPHQL_JWT_SECRET: '{   "type":"RS256",   "key": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2PhZw8Xv4T7t2QVzUo3m\n2XRz1Ktnqkf7+j7UGM4VYE+f1uFWJ8ESXa75gn6N8phsi9CrTThph/mojvsPVPMv\nROXugl8uaLc+GROwgtxz5i8GNvoJVjXafUGjGaxhqZNfaNhObIrpFs0YXXcvPXOL\n9MGm+64xHO9nnBbQYnBCtzptzHG6UAW1jX6g3RwdfM/BhCjh239LqiXLFGZJ59XP\n1WXVaNbiFTroluEpyA/OB3pqmwXhPfZ8++MZYUz+wvUTAmj/kWMwvgWaiYhm1lMm\niYxDLzG/BvKi7D47oB9BKK0ah4SLVLH2ngzflvKH72HeDxjDIusEvP6TX7AR/y1w\nPQnNk+7V0u+khMR4aaxxt8cxAkGLeNyoQsZb56CGr6L+7Gv25zB5zLQTrPtgR7H2\nsCgzhCXrhF30cEng/QUh3BHt5TaS125w/ycKaA+HRaytCBxXuqaykp4NMhboskRJ\nPSIGFu0ruUWdzHZXX9Cr65u5D52qjBq0xENpMQMl7DYKrvC+xYWK87uUFvvbY6UO\nUynWu016fJoDQ6PatjeKO1WhU1TpQQmqb3CJ95Ras9rc8Ft6a3e+DMR/+fwZOsVR\n4+Ld16NVaTYUAhowJg3viZNR9Qu9okokg/vrdbn3UKv+Wr9dK1GF8VJ8MvQlcquh\ngJDy4QOsRPzT7HmAHbDCo3kCAwEAAQ==\n-----END PUBLIC KEY-----" }'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
     networks:
       - larasura
