@@ -1,0 +1,3 @@
+[submodule "gatsby-ts"]
+	path = gatsby-ts
+	url = https://github.com/luchmewep/GatsbyTSxLaravelHasura.git
