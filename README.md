@@ -219,6 +219,8 @@ docker-compose up -d
 
 As mentioned, one vital part of this boilerplate is the storage service (**MinIO**). Before you can upload anything, you have to have a valid `access_token` and you can only get one if you have registered already. To demonstrate, **PostMan** is used. Configure `Authorization` by choosing `Bearer Token` and pasting the `access_token`.
 
+For reference, here's my **Postman Collection**: https://www.getpostman.com/collections/c58cae3c7bc6bf72462d
+
 ![Set Authorization Token](images/MinIO_Upload_0.png)
 
 ### Upload Single Photo 📷
