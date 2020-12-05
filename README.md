@@ -6,6 +6,8 @@ This backend-only boilerplate is created for people who are _really really curio
 
 Btw, if you have cool suggestions, you can fork this repo or discuss it with me directly ([Facebook](https://www.facebook.com/luchmewep)). 😁 If you have a job offering, I am up for an interview! (_Yes, I need MONEY!_ 💰💰💰)
 
+**P.S.** There's a PPT presentation for more info [**here**](https://umindanaoeduph-my.sharepoint.com/:p:/g/personal/jluchavez_umindanao_edu_ph/EWyIEXwZLKJGo98FUQQwiVIBEuHlCH4sc6hVoMCsdciHCQ?e=arzmBj). Its password is **laravelhasura**.
+
 ## Laravel 7.x Features
 
 - [x] GraphQL-ready ⚡
@@ -189,9 +191,40 @@ php artisan serve
 
 **Step 8**: Since we now have the role id for the user, we can proceed to register an account. To register, we have to use the `register` mutation and supply all information needed. For this demo, we just need the `access_token` so we only need to specify that as the output.
 
+```
+mutation registerUser{
+  register(object:{
+    given_name: "James"
+    middle_name: "Sebial"
+    surname: "Luchavez"
+    email: "james@gmail.com"
+    password: "12345678"
+    password_confirmation: "12345678"
+    role_id: "insert_id_here"
+  }){
+    tokens{
+      access_token
+      refresh_token
+    }
+  }
+}
+```
+
 ![Register Mutation](./images/08_PlaygroundRegister.png)
 
 **Step 9**: Since we already registered the user above, we can now use it to login as well. To login, we have to use the `login` mutation and specify `access_token` to be the output.
+
+```
+mutation loginUser{
+  login(object:{
+    username: "mrstudyfirst@gmail.com"
+    password: "12345678"
+  }){
+    access_token
+    refresh_token
+  }
+}
+```
 
 ![Login Mutation](./images/07_PlaygroundLogin.png)
 
