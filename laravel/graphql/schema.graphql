@@ -43,11 +43,11 @@ type Role {
 }
 
 type Mutation {
-    login(input: LoginInput @spread): AuthPayload!
+    login(object: LoginInput @spread): AuthPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve"
         )
-    refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload!
+    refreshToken(object: RefreshTokenInput @spread): RefreshTokenPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve"
         )
@@ -56,32 +56,32 @@ type Mutation {
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve"
         )
     forgotPassword(
-        input: ForgotPasswordInput! @spread
+        object: ForgotPasswordInput! @spread
     ): ForgotPasswordResponse!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve"
         )
     updateForgottenPassword(
-        input: NewPasswordWithCodeInput @spread
+        object: NewPasswordWithCodeInput @spread
     ): ForgotPasswordResponse!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve"
         )
-    register(input: RegisterInput @spread): RegisterResponse!
+    register(object: RegisterInput @spread): RegisterResponse!
         @field(resolver: "App\\GraphQL\\Mutations\\Register@resolve")
-    # register(input: RegisterInput @spread): RegisterResponse!
+    # register(object: RegisterInput @spread): RegisterResponse!
     #     @field(
     #         resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve"
     #     )
-    socialLogin(input: SocialLoginInput! @spread): AuthPayload!
+    socialLogin(object: SocialLoginInput! @spread): AuthPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"
         )
-    verifyEmail(input: VerifyEmailInput! @spread): AuthPayload!
+    verifyEmail(object: VerifyEmailInput! @spread): AuthPayload!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve"
         )
-    updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse!
+    updatePassword(object: UpdatePassword! @spread): UpdatePasswordResponse!
         @field(
             resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve"
         )
