@@ -44,46 +44,24 @@ type Role {
 
 type Mutation {
     login(object: LoginInput @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve"
-        )
     refreshToken(object: RefreshTokenInput @spread): RefreshTokenPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve"
-        )
     logout: LogoutResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve"
-        )
     forgotPassword(
         object: ForgotPasswordInput! @spread
     ): ForgotPasswordResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve"
-        )
     updateForgottenPassword(
         object: NewPasswordWithCodeInput @spread
     ): ForgotPasswordResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve"
-        )
+        @field(resolver: "App\\GraphQL\\Mutations\\ResetPassword")
     register(object: RegisterInput @spread): RegisterResponse!
-        @field(resolver: "App\\GraphQL\\Mutations\\Register@resolve")
-    # register(object: RegisterInput @spread): RegisterResponse!
-    #     @field(
-    #         resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve"
-    #     )
     socialLogin(object: SocialLoginInput! @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"
-        )
     verifyEmail(object: VerifyEmailInput! @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve"
-        )
     updatePassword(object: UpdatePassword! @spread): UpdatePasswordResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve"
-        )
-        @guard(with: ["api"])
+        @guard(with: "api")
+    # @field(
+    #     resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"
+    # )
+    # @field(
+    #     resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve"
+    # )
 }

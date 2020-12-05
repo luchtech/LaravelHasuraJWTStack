@@ -121,7 +121,7 @@ class DocumentController extends Controller
     public function destroy(Document $document)
     {
         // check first if he is the owner of the photo
-        if (!request()->user()->photos->contains($document)) {
+        if (!request()->user()->documents->contains($document)) {
             abort(403, "Unauthorized.");
         }
 
