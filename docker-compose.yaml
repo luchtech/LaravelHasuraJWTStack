@@ -1,41 +1,21 @@
-# This compose file is composed of 4 services: nginx, postgres, laravel, and hasura
+# This compose file is composed of 3 services: postgres, hasura, and minio
 
-version: "3"
-networks:
-  laravel:
+version: "3.7"
 services:
-  # site:
-  #   build:
-  #     context: .
-  #     dockerfile: nginx.dockerfile
-  #   ports:
-  #     - "8000:80"
-  #   depends_on:
-  #     - laravel
-  #     - postgres
-  #   networks:
-  #     - laravel
   postgres:
     image: postgres:12
-    restart: unless-stopped
+    container_name: pgsql
+    restart: always
     ports:
       - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - larasura_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: 12345678
+      POSTGRES_USER: postgresuser
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: postgresdb
     networks:
-      - laravel
-  # laravel:
-  #   build:
-  #     context: .
-  #     dockerfile: laravel.dockerfile
-  #   environment:
-  #     DATABASE_URL: postgres://postgres:12345678@postgres:5432/postgres
-  #   ports:
-  #     - "9000:9000"
-  #   networks:
-  #     - laravel
+      - larasura
   graphql-engine:
     build:
       context: .
@@ -44,15 +24,32 @@ services:
       - "8080:8080"
     depends_on:
       - "postgres"
-    restart: unless-stopped
+    restart: always
+    container_name: hasura
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:12345678@postgres:5432/postgres
-      ## enable the console served by server
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      ## enable debugging mode. It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_ADMIN_SECRET: 987654321
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgresuser:postgrespassword@postgres:5432/postgresdb
+      HASURA_GRAPHQL_ADMIN_SECRET: secret
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup,http-log,query-log,websocket-log,webhook-log
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_JWT_SECRET: '{   "type":"RS256",   "key": "" }'
+#      HASURA_GRAPHQL_JWT_SECRET: '{   "type":"RS256",   "key": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAmv0IvZxjFNkkPDdc1xIN\nbweUc4wMY7zkmSvBq7W3TQjznzXB/iqTnpkQl9nVnjcK4Wy4XFocIYqfdbryWGlU\n0DAICOI5cwcP1zFyOezBoP86OqZjh0G5OclmWDNX8jSG6xukKgvlV+dj5jW6OvTG\nN5Bt9fE8A/oElqMLiWGJ2UVmbpgTl7mQKqK0Kf+aZ7ldDX7v4XLfTGcLFud79rWo\nPNviQrnzK/428oIWG4cY5CKFc36QNt+Loi2cGmKkpldWdd4u52mipKD9uN6cRN+i\nWbJ3jbMVWLFJa4AXRWf1GcyUJl2Z/7KThiOYefEsY5Av4uH0TBOi1u44iNcBs7w5\nRaMuHS+h66MRaJt2EOiQfG3h5e6OW1WZYUs8KaFv259hPV1cCmS5tOr0cbJosRwQ\nIwbpdt4AXc/eoij2IF+DdAkCObZl+Oeu+oe4z7K9vG7pA0XzWuv3B9DN9mxbdUIV\npQzG+sQa0TJrzh/V1khybMYjXg0sN5Klfj9hTiZUhO4sAb5GqQhltBbjdPY7MnIB\nU0z46YWN1LqB+4nDaS9i1TOCd3cIJ1R0B+h8dTjoz9UfNoKAUr2kKk67KT0EJw0q\nPncKlufcn8xEWibBIclxFrkRIodJf9VCvfkDgwxuwH0UVtQAxWteNglCqwKbEWJc\n03RdJQHYLKevdO8IlsFM3d8CAwEAAQ==\n-----END PUBLIC KEY-----" }'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+    networks:
+      - larasura
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+    volumes:
+      - larasura_data:/var/lib/minio
+    environment:
+      MINIO_ACCESS_KEY: accesskey
+      MINIO_SECRET_KEY: secretkey
+    command: server /data
+    networks:
+      - larasura
+networks:
+  larasura:
 volumes:
-  db_data:
+  larasura_data:

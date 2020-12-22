@@ -9,7 +9,7 @@ type Query {
     # users: [User!]! @paginate(defaultCount: 10)
     # user(id: ID @eq): User @find
     # me: User @guard @auth
-    roles: [Role!]! @paginate(defaultCount: 10)
+    # roles: [Role!]! @paginate(defaultCount: 10)
     developers: [User]
 }
 
@@ -43,47 +43,25 @@ type Role {
 }
 
 type Mutation {
-    login(input: LoginInput @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve"
-        )
-    refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve"
-        )
+    login(object: LoginInput @spread): AuthPayload!
+    refreshToken(object: RefreshTokenInput @spread): RefreshTokenPayload!
     logout: LogoutResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve"
-        )
     forgotPassword(
-        input: ForgotPasswordInput! @spread
+        object: ForgotPasswordInput! @spread
     ): ForgotPasswordResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve"
-        )
     updateForgottenPassword(
-        input: NewPasswordWithCodeInput @spread
+        object: NewPasswordWithCodeInput @spread
     ): ForgotPasswordResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve"
-        )
-    register(input: RegisterInput @spread): RegisterResponse!
-        @field(resolver: "App\\GraphQL\\Mutations\\Register@resolve")
-    # register(input: RegisterInput @spread): RegisterResponse!
-    #     @field(
-    #         resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve"
-    #     )
-    socialLogin(input: SocialLoginInput! @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"
-        )
-    verifyEmail(input: VerifyEmailInput! @spread): AuthPayload!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve"
-        )
-    updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse!
-        @field(
-            resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve"
-        )
-        @guard(with: ["api"])
+        @field(resolver: "App\\GraphQL\\Mutations\\ResetPassword")
+    register(object: RegisterInput @spread): RegisterResponse!
+    socialLogin(object: SocialLoginInput! @spread): AuthPayload!
+    verifyEmail(object: VerifyEmailInput! @spread): AuthPayload!
+    updatePassword(object: UpdatePassword! @spread): UpdatePasswordResponse!
+        @guard(with: "api")
+    # @field(
+    #     resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve"
+    # )
+    # @field(
+    #     resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve"
+    # )
 }
