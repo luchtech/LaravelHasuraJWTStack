@@ -59,7 +59,7 @@ input NewPasswordWithCodeInput {
 
 input RegisterInput {
     given_name: String! @rules(apply: ["required", "string"])
-    middle_name: String! @rules(apply: ["string"])
+    middle_name: String @rules(apply: ["nullable","string"])
     surname: String! @rules(apply: ["required", "string"])
     email: String! @rules(apply: ["required", "email", "unique:users,email"])
     password: String! @rules(apply: ["required", "confirmed", "min:8"])

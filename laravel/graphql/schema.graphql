@@ -6,27 +6,36 @@ scalar DateTime
     @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Query {
-    # users: [User!]! @paginate(defaultCount: 10)
+    users: [User] @paginate
     # user(id: ID @eq): User @find
-    # me: User @guard @auth
-    # roles: [Role!]! @paginate(defaultCount: 10)
+    me: User @auth(guard: "api")
+    roles: [Role!]! @paginate
+    developers: [User]
+}
+
+type Query {
+    users: [User] @paginate
+    # user(id: ID @eq): User @find
+    me: User @auth(guard: "api")
+    roles: [Role!]! @paginate
     developers: [User]
 }
 
 type User {
     id: String!
     given_name: String!
-    middle_name: String!
+    middle_name: String
     surname: String!
     email: String!
     created_at: DateTime!
     updated_at: DateTime!
+    roles: [UsersRoles] @hasMany(relation: "users_roles")
 }
 
 type UsersRoles {
     id: String!
-    user_id: User! @belongsTo
-    role_id: Role! @belongsTo
+    user: User! @belongsTo
+    role: Role! @belongsTo
     is_active: Boolean!
     is_approved: Boolean!
     created_at: DateTime!
@@ -40,6 +49,7 @@ type Role {
     access_level: Int!
     created_at: DateTime!
     updated_at: DateTime!
+    user_roles: [UsersRoles] @hasMany
 }
 
 type Mutation {
