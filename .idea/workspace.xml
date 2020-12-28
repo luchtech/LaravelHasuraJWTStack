@@ -4,21 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6266efd3-5a52-42ba-8114-192578ae8543" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatsbyts/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/gatsbyts/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatsbyts/src/components/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/gatsbyts/src/components/footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatsbyts/src/components/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/gatsbyts/src/components/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatsbyts/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/gatsbyts/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laravel/graphql/auth.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/laravel/graphql/auth.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laravel/graphql/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/laravel/graphql/schema.graphql" afterDir="false" />
-    </list>
+    <list default="true" id="6266efd3-5a52-42ba-8114-192578ae8543" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/laravel/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -191,6 +183,7 @@
       <option name="presentableId" value="Default" />
       <updated>1608623531255</updated>
       <workItem from="1608623532605" duration="842000" />
+      <workItem from="1608789075008" duration="312000" />
     </task>
     <servers />
   </component>
@@ -207,6 +200,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
